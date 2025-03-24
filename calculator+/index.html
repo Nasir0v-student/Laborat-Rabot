@@ -3,45 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Погода в городах</title>
-    <link rel="stylesheet" href="main.css">
+    <title>Calculator+</title>
+    <style>
+
+        body {
+
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0; 
+
+        }
+
+        .navbar {
+
+            background-color: white;
+            border-color: #FFFACD;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: flex-end; 
+
+        }
+
+        .calculator {
+            padding: 40px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white; 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+            max-width: 400px; 
+            margin: 0 auto; 
+
+        }
+
+        .registration {
+
+            display: none; 
+            margin-top: 5px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white; 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+
+        }
+
+        input[type="text"], input[type="password"], input[type="mail"], input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+
+        }
+
+        select {
+
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+
+        }
+
+        button[type="submit"], .navbar button {
+
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+
+        }
+
+        button[type="submit"]:hover, .navbar button:hover {
+            background-color: #2214e6;
+
+        }
+
+        #result {
+            font-size: 18px;
+            margin-top: 10px;
+
+        }
+
+    </style>
 </head>
 <body>
-    <div class="weather-container">
-        <h1>Погода в городах</h1>
-        
-        <!-- Город 1 -->
-        <div class="city">
-            <h2>Москва</h2>
-            <div class="weather-info">
-                <p>Температура: <span id="temperature-moscow">20°C</span></p>
-                <p>Состояние: <span id="condition-moscow">Облачно</span></p>
-                <p>Влажность: <span id="humidity-moscow">65%</span></p>
-                <p>Ветер: <span id="wind-moscow">5 км/ч</span></p>
-            </div>
-        </div>
 
-        <!-- Город 2 -->
-        <div class="city">
-            <h2>Санкт-Петербург</h2>
-            <div class="weather-info">
-                <p>Температура: <span id="temperature-spb">18°C</span></p>
-                <p>Состояние: <span id="condition-spb">Дождь</span></p>
-                <p>Влажность: <span id="humidity-spb">70%</span></p>
-                <p>Ветер: <span id="wind-spb">10 км/ч</span></p>
-            </div>
-        </div>
+    <div class="navbar">
 
-        <!-- Город 3 -->
-        <div class="city">
-            <h2>Златоуст</h2>
-            <div class="weather-info">
-                <p>Температура: <span id="temperature-novosibirsk">15°C</span></p>
-                <p>Состояние: <span id="condition-novosibirsk">Ясно</span></p>
-                <p>Влажность: <span id="humidity-novosibirsk">50%</span></p>
-                <p>Ветер: <span id="wind-novosibirsk">7 км/ч</span></p>
-            </div>
+        <button onclick="toggleRegistration()">Регистрация</button>
+        <div class="registration" id="registrationFormContainer">
+            <form id="registrationForm">
+                <label for="username">Имя пользователя:</label>
+                <input type="text" id="username" name="username" required><br><br>
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" name="password" required><br><br>
+                <button type="submit">Зарегистрироваться</button>
+            </form>
         </div>
     </div>
+
+    <h1>Калькулятор</h1>
+    <div class="calculator">
+        <input type="number" id="num1" placeholder="Введите число 1">
+        <select id="operator">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+        <input type="number" id="num2" placeholder="Введите число 2">
+        <button onclick="calculate()">Вычислить</button>
+        <p id="result">Результат: 0</p>
+    </div>
+
+    <script>
+        function calculate() {
+            const num1 = parseFloat(document.getElementById('num1').value);
+            const num2 = parseFloat(document.getElementById('num2').value);
+            const operator = document.getElementById('operator').value;
+            let result;
+
+            if (operator === '+') {
+                result = num1 + num2;
+            } else if (operator === '-') {
+                result = num1 - num2;
+            } else if (operator === '*') {
+                result = num1 * num2;
+            } else if (operator === '/') {
+                result = num1 / num2;
+            }
+
+            document.getElementById('result').innerHTML = 'Результат: ' + result;
+        }
+
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            alert('Регистрация успешна!');
+            document.getElementById('registrationFormContainer').style.display = 'none'; // Скрываем форму после регистрации
+        });
+
+        function toggleRegistration() {
+            const registrationForm = document.getElementById('registrationFormContainer');
+            registrationForm.style.display = registrationForm.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+
 </body>
 </html>
