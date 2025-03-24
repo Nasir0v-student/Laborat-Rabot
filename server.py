@@ -5,57 +5,52 @@ import json
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-# Пример данных о погоде
-weather_data = {
-    "Москва": {
-        "temperature": "Температура: 20°C",
-        "condition": "Состояние: Облачно",
-        "humidity": "Влажность: 65%",
-        "wind": "Ветер: 5 км/ч"
-    },
-    "Санкт-Петербург": {
-        "temperature": "Температура: 18°C",
-        "condition": "Состояние: Дождь",
-        "humidity": "Влажность: 80%",
-        "wind": "Ветер: 10 км/ч"
-    },
-    "Новосибирск": {
-        "temperature": "Температура: 15°C",
-        "condition": "Состояние: Ясно",
-        "humidity": "Влажность: 50%",
-        "wind": "Ветер: 3 км/ч"
-    }
-}
-
 @app.route("/")
 def index():
+    # Возвращаем JSON-ответ с данными из API
     return jsonify({
-        "message": "Добро пожаловать в API погоды!",
-        "available_cities": list(weather_data.keys())
+        "message": "Request1",
+        "articles": [
+            {
+                "Name": "Vasya",
+                "description": "2 + 3 = 5",
+            },
+        ]
     })
 
-@app.route("/api/weather/all", methods=["GET"])
-def get_all_weather():
-    return jsonify(weather_data)
 
-@app.route("/api/weather/<city>", methods=["GET"])
-def get_weather(city):
-    city_weather = weather_data.get(city)
-    if city_weather:
-        return jsonify({city: city_weather})
-    else:
-        return jsonify({"error": "Город не найден"}), 404
 
-@app.route("/api/weather", methods=["POST"])
+@app.route("/api/article/all")
+def get_article():
+    article = [
+        {
+            "History": "Vasya",
+            "description": "2 + 3 = 5",
+        },
+    ]
+    return Response(json.dumps(article), content_type="application/json")
+
+@app.route("/api/calculate", methods=["POST"])
 def calculate():
     data = request.json
-    city = data.get("city")
+    num1 = data.get("num1")
+    num2 = data.get("num2")
+    operator = data.get("operator")
     
-    city_weather = weather_data.get(city)
-    if city_weather:
-        return jsonify({city: city_weather})
+    if operator == "+":
+        result = num1 + num2
+    elif operator == "-":
+        result = num1 - num2
+    elif operator == "*":
+        result = num1 * num2
+    elif operator == "/":
+        if num2 == 0:
+            return jsonify({"error": "Деление на ноль"}), 400
+        result = num1 / num2
     else:
-        return jsonify({"error": "Город не найден"}), 404
+        return jsonify({"error": "Неверный оператор"}), 400
+
+    return jsonify({"result": result})
 
 def main():
     app.run("localhost", 8000, debug=True)
