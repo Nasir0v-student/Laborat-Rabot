@@ -1,7 +1,7 @@
 from flask import Flask, Response, request, jsonify
 from flask_cors import CORS
+from sqlalchemy import create_engine
 import json
-
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
@@ -17,9 +17,7 @@ def index():
             },
         ]
     })
-
-
-
+    
 @app.route("/api/article/all")
 def get_article():
     article = [
