@@ -29,29 +29,6 @@ def get_article():
         },
     ]
     return Response(json.dumps(article), content_type="application/json")
-
-@app.route("/api/calculate", methods=["POST"])
-def calculate():
-    data = request.json
-    num1 = data.get("num1")
-    num2 = data.get("num2")
-    operator = data.get("operator")
-    
-    if operator == "+":
-        result = num1 + num2
-    elif operator == "-":
-        result = num1 - num2
-    elif operator == "*":
-        result = num1 * num2
-    elif operator == "/":
-        if num2 == 0:
-            return jsonify({"error": "Деление на ноль"}), 400
-        result = num1 / num2
-    else:
-        return jsonify({"error": "Неверный оператор"}), 400
-
-    return jsonify({"result": result})
-
 def main():
     app.run("localhost", 8000, debug=True)
 
