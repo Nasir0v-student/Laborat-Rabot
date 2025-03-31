@@ -5,154 +5,189 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator+</title>
     <style>
-
         body {
-
             font-family: Arial, sans-serif;
             margin: 20px;
-            background-color: #f0f0f0; 
-
+            background-color: #f0f0f0;
         }
 
         .navbar {
-
             background-color: white;
-            border-color: #FFFACD;
             border-radius: 10px;
             padding: 10px;
             margin-bottom: 10px;
             display: flex;
-            justify-content: flex-end; 
-
+            justify-content: flex-end;
         }
 
         .calculator {
             padding: 40px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            background-color: white; 
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
-            max-width: 400px; 
-            margin: 0 auto; 
-
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 0 auto;
         }
 
         .registration {
-
             display: none; 
             margin-top: 5px;
             padding: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            background-color: white; 
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
-
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        input[type="text"], input[type="password"], input[type="mail"], input[type="number"] {
+        input[type="text"], input[type="password"], input[type="email"] {
             width: calc(100% - 20px);
             padding: 10px;
             margin: 5px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
-
         }
 
-        select {
-
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-
-        }
-
-        button[type="submit"], .navbar button {
-
+        button {
             padding: 10px 20px;
             font-size: 16px;
-            background-color: #4CAF50;
+            background-color: #708090; 
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
-
+            margin: 10px 0; 
         }
 
-        button[type="submit"]:hover, .navbar button:hover {
-            background-color: #2214e6;
-
+        button:hover {
+            background-color: #778899; 
         }
 
         #result {
             font-size: 18px;
             margin-top: 10px;
-
         }
 
+       
+        h1 {
+            text-align: center;
+            margin-bottom: 20px; 
+        }
     </style>
 </head>
 <body>
 
     <div class="navbar">
-
-        <button onclick="toggleRegistration()">Регистрация</button>
+        <button onclick="toggleRegistrationForm()">Регистрация</button>
         <div class="registration" id="registrationFormContainer">
-            <form id="registrationForm">
-                <label for="username">Имя пользователя:</label>
-                <input type="text" id="username" name="username" required><br><br>
+            <form id="registrationForm" onsubmit="event.preventDefault(); alert('Регистрация успешна!'); this.parentElement.style.display = 'none';">
+                <label for="name">Имя:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
                 <label for="password">Пароль:</label>
-                <input type="password" id="password" name="password" required><br><br>
+                <input type="password" id="password" name="password" required>
                 <button type="submit">Зарегистрироваться</button>
             </form>
         </div>
     </div>
 
-    <h1>Калькулятор</h1>
+    <h1>Calculator+</h1> 
     <div class="calculator">
-        <input type="number" id="num1" placeholder="Введите число 1">
-        <select id="operator">
-            <option value="+">+</option>
-            <option value="-">-</option>
-            <option value="*">*</option>
-            <option value="/">/</option>
-        </select>
-        <input type="number" id="num2" placeholder="Введите число 2">
-        <button onclick="calculate()">Вычислить</button>
+        <input type="text" id="numbers" placeholder="Введите выражение или число">
+        <div>
+            <button onclick="appendOperator('+')">+</button>
+            <button onclick="appendOperator('-')">-</button>
+            <button onclick="appendOperator('*')">*</button>
+            <button onclick="appendOperator('/')">/</button>
+            <button onclick="calculate()">Вычислить</button>
+            <button onclick="calculatePercentage()">%</button>
+            <button onclick="calculateLog()">Log</button>
+            <button onclick="calculateTan()">Tan</button>
+            <button onclick="clearCalculator()">Очистить</button>
+        </div>
         <p id="result">Результат: 0</p>
     </div>
 
     <script>
+        function toggleRegistrationForm() {
+            const formContainer = document.getElementById('registrationFormContainer');
+            formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function appendOperator(operator) {
+            document.getElementById('numbers').value += operator;
+        }
+
         function calculate() {
-            const num1 = parseFloat(document.getElementById('num1').value);
-            const num2 = parseFloat(document.getElementById('num2').value);
-            const operator = document.getElementById('operator').value;
-            let result;
-
-            if (operator === '+') {
-                result = num1 + num2;
-            } else if (operator === '-') {
-                result = num1 - num2;
-            } else if (operator === '*') {
-                result = num1 * num2;
-            } else if (operator === '/') {
-                result = num1 / num2;
+            let input = document.getElementById('numbers').value;
+            let numbers = input.split(/[\+\-\*\/]/).map(parseFloat);
+            let operators = input.split('').filter(char => ['+', '-', '*', '/'].includes(char));
+            if (numbers.some(isNaN)) {
+                document.getElementById('result').innerHTML = 'Ошибка: неверный ввод';
+                return;
             }
-
+            if (numbers.length - 1 !== operators.length) {
+                document.getElementById('result').innerHTML = 'Ошибка: неверное выражение';
+                return;
+            }
+            let result = numbers[0];
+            for (let i = 0; i < operators.length; i++) {
+                const operator = operators[i];
+                const nextNumber = numbers[i + 1];
+                if (operator === '+') result += nextNumber;
+                else if (operator === '-') result -= nextNumber;
+                else if (operator === '*') result *= nextNumber;
+                else if (operator === '/') {
+                    if (nextNumber === 0) {
+                        document.getElementById('result').innerHTML = "Ошибка: деление на ноль";
+                        return;
+                    } else {
+                        result /= nextNumber;
+                    }
+                }
+            }
             document.getElementById('result').innerHTML = 'Результат: ' + result;
         }
 
-        document.getElementById('registrationForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            alert('Регистрация успешна!');
-            document.getElementById('registrationFormContainer').style.display = 'none'; // Скрываем форму после регистрации
-        });
+        function calculatePercentage() {
+            let input = document.getElementById('numbers').value;
+            const number = parseFloat(input);
+            if (!isNaN(number)) {
+                const percentage = number / 100;
+                document.getElementById('result').innerHTML = 'Результат: ' + percentage;
+            } else {
+                document.getElementById('result').innerHTML = 'Ошибка: неверный ввод';
+            }
+        }
 
-        function toggleRegistration() {
-            const registrationForm = document.getElementById('registrationFormContainer');
-            registrationForm.style.display = registrationForm.style.display === 'none' ? 'block' : 'none';
+        function calculateLog() {
+            let input = document.getElementById('numbers').value;
+            const [number, base] = input.split(',').map(Number);
+            if (number > 0 && base > 0) {
+                const result = Math.log(number) / Math.log(base);
+                document.getElementById('result').innerHTML = 'Результат: ' + result;
+            } else {
+                document.getElementById('result').innerHTML = 'Ошибка: логарифм определен только для положительных чисел';
+            }
+        }
+
+        function calculateTan() {
+            let input = document.getElementById('numbers').value;
+            const number = parseFloat(input);
+            if (!isNaN(number)) {
+                const radians = number * Math.PI / 180;
+                const tangent = Math.tan(radians);
+                document.getElementById('result').innerHTML = 'Результат: ' + tangent;
+            } else {
+                document.getElementById('result').innerHTML = 'Ошибка: неверный ввод';
+            }
+        }
+
+        function clearCalculator() {
+            document.getElementById('numbers').value = '';
+            document.getElementById('result').innerHTML = 'Результат: 0';
         }
     </script>
 
