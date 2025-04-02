@@ -78,20 +78,6 @@
 </head>
 <body>
 
-    <div class="navbar">
-        <button onclick="toggleRegistrationForm()">Регистрация</button>
-        <div class="registration" id="registrationFormContainer">
-            <form id="registrationForm" onsubmit="event.preventDefault(); alert('Регистрация успешна!'); this.parentElement.style.display = 'none';">
-                <label for="name">Имя:</label>
-                <input type="text" id="name" name="name" required>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                <label for="password">Пароль:</label>
-                <input type="password" id="password" name="password" required>
-                <button type="submit">Зарегистрироваться</button>
-            </form>
-        </div>
-    </div>
 
     <h1>Calculator+</h1> 
     <div class="calculator">
@@ -111,10 +97,6 @@
     </div>
 
     <script>
-        function toggleRegistrationForm() {
-            const formContainer = document.getElementById('registrationFormContainer');
-            formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
-        }
 
         function appendOperator(operator) {
             document.getElementById('numbers').value += operator;
