@@ -30,16 +30,6 @@
             margin: 0 auto;
         }
 
-        .registration {
-            display: none; 
-            margin-top: 5px;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
         input[type="text"], input[type="password"], input[type="email"] {
             width: calc(100% - 20px);
             padding: 10px;
@@ -57,7 +47,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
-            margin: 10px 0; 
+            margin: 10px; 
         }
 
         button:hover {
@@ -69,109 +59,151 @@
             margin-top: 10px;
         }
 
-       
         h1 {
             text-align: center;
             margin-bottom: 20px; 
+        }
+
+        .percentage-input, .power-input {
+            display: none;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
 
-
     <h1>Calculator+</h1> 
     <div class="calculator">
-        <input type="text" id="numbers" placeholder="Введите выражение или число">
+        <input type="text" id="numbers" placeholder="Введите выражение или число" onfocus="this.select()">
+        
         <div>
-            <button onclick="appendOperator('+')">+</button>
-            <button onclick="appendOperator('-')">-</button>
-            <button onclick="appendOperator('*')">*</button>
-            <button onclick="appendOperator('/')">/</button>
-            <button onclick="calculate()">Вычислить</button>
-            <button onclick="calculatePercentage()">%</button>
-            <button onclick="calculateLog()">Log</button>
-            <button onclick="calculateTan()">Tan</button>
-            <button onclick="clearCalculator()">Очистить</button>
+          <button onclick="appendOperator('1')">1</button>
+          <button onclick="appendOperator('2')">2</button>
+          <button onclick="appendOperator('3')">3</button>
+          <button onclick="appendOperator('4')">4</button>
+          <button onclick="appendOperator('5')">5</button>
+          <button onclick="appendOperator('6')">6</button>
+          <button onclick="appendOperator('7')">7</button>
+          <button onclick="appendOperator('8')">8</button>
+          <button onclick="appendOperator('9')">9</button>
+          <button onclick="appendOperator('0')">0</button>
+          <button onclick="appendOperator(',')">,</button> 
+          <button onclick="appendOperator('(')"> ( </button>
+          <button onclick="appendOperator(')')"> ) </button>
+          <button onclick="appendOperator('+')">+</button>
+          <button onclick="appendOperator('-')">-</button>
+          <button onclick="appendOperator('*')">*</button>
+          <button onclick="appendOperator('/')">/</button>
+          <button onclick="togglePercentageInput()">%</button>
+          <button onclick="togglePowerInput()">^</button>
+          <button onclick="calculate()">Вычислить</button>
+          <button onclick="clearCalculator()">Очистить</button>
         </div>
-        <p id="result">Результат: 0</p>
-    </div>
 
-    <script>
+        <div class="percentage-input" id="percentageInput">
+            <input type="text" id="percentageValue" placeholder="Введите проценты">
+            <input type="text" id="baseValue" placeholder="От какого числа?">
+            <button onclick="calculatePercentageValue()">Вычислить процент</button>
+        </div>
 
-        function appendOperator(operator) {
-            document.getElementById('numbers').value += operator;
-        }
+        <div class="power-input" id="powerInput">
+           <input type="text" id="baseNumber" placeholder="Введите число">
+           <input type="text" id="exponentNumber" placeholder="Введите степень">
+           <button onclick="calculatePower()">Вычислить степень</button>
+           <br><br> 
+       </div>
 
-        function calculate() {
-            let input = document.getElementById('numbers').value;
-            let numbers = input.split(/[\+\-\*\/]/).map(parseFloat);
-            let operators = input.split('').filter(char => ['+', '-', '*', '/'].includes(char));
-            if (numbers.some(isNaN)) {
-                document.getElementById('result').innerHTML = 'Ошибка: неверный ввод';
-                return;
-            }
-            if (numbers.length - 1 !== operators.length) {
-                document.getElementById('result').innerHTML = 'Ошибка: неверное выражение';
-                return;
-            }
-            let result = numbers[0];
-            for (let i = 0; i < operators.length; i++) {
-                const operator = operators[i];
-                const nextNumber = numbers[i + 1];
-                if (operator === '+') result += nextNumber;
-                else if (operator === '-') result -= nextNumber;
-                else if (operator === '*') result *= nextNumber;
-                else if (operator === '/') {
-                    if (nextNumber === 0) {
-                        document.getElementById('result').innerHTML = "Ошибка: деление на ноль";
-                        return;
-                    } else {
-                        result /= nextNumber;
-                    }
-                }
-            }
-            document.getElementById('result').innerHTML = 'Результат: ' + result;
-        }
+       <p id="result">Результат: 0</p>
+   </div>
 
-        function calculatePercentage() {
-            let input = document.getElementById('numbers').value;
-            const number = parseFloat(input);
-            if (!isNaN(number)) {
-                const percentage = number / 100;
-                document.getElementById('result').innerHTML = 'Результат: ' + percentage;
-            } else {
-                document.getElementById('result').innerHTML = 'Ошибка: неверный ввод';
-            }
-        }
+   <script>
+       function appendOperator(operator) {
+           document.getElementById('numbers').value += operator;
+           document.getElementById('numbers').focus();
+       }
 
-        function calculateLog() {
-            let input = document.getElementById('numbers').value;
-            const [number, base] = input.split(',').map(Number);
-            if (number > 0 && base > 0) {
-                const result = Math.log(number) / Math.log(base);
-                document.getElementById('result').innerHTML = 'Результат: ' + result;
-            } else {
-                document.getElementById('result').innerHTML = 'Ошибка: логарифм определен только для положительных чисел';
-            }
-        }
+       function calculate() {
+           let input = document.getElementById('numbers').value.replace(',', '.'); 
+           let result;
 
-        function calculateTan() {
-            let input = document.getElementById('numbers').value;
-            const number = parseFloat(input);
-            if (!isNaN(number)) {
-                const radians = number * Math.PI / 180;
-                const tangent = Math.tan(radians);
-                document.getElementById('result').innerHTML = 'Результат: ' + tangent;
-            } else {
-                document.getElementById('result').innerHTML = 'Ошибка: неверный ввод';
-            }
-        }
+           try {
+               result = eval(input);
+               if (result === Infinity || result === -Infinity) {
+                   throw new Error("Ошибка: деление на ноль");
+               }
+               
+               if (isNaN(result)) {
+                   throw new Error("Ошибка в вычислении");
+               }
+               
+               document.getElementById('result').innerHTML = 'Результат: ' + result;
 
-        function clearCalculator() {
-            document.getElementById('numbers').value = '';
-            document.getElementById('result').innerHTML = 'Результат: 0';
-        }
-    </script>
+           } catch (error) {
+               document.getElementById('result').innerHTML = 'Ошибка';
+           }
+       }
+       
+       function togglePercentageInput() {
+           const percentageInput = document.getElementById('percentageInput');
+           percentageInput.style.display = percentageInput.style.display === 'block' ? 'none' : 'block';
+           document.getElementById('powerInput').style.display = 'none'; 
+       }
+
+       function togglePowerInput() {
+           const powerInput = document.getElementById('powerInput');
+           powerInput.style.display = powerInput.style.display === 'block' ? 'none' : 'block';
+           document.getElementById('percentageInput').style.display = 'none'; 
+       }
+
+       function calculatePercentageValue() {
+           const percentage = parseFloat(document.getElementById('percentageValue').value);
+           const base = parseFloat(document.getElementById('baseValue').value);
+           if (!isNaN(percentage) && !isNaN(base)) {
+               const result = (percentage / 100) * base;
+               document.getElementById('result').innerHTML = 'Результат: ' + result;
+
+               clearPercentageInputs();
+               document.getElementById('percentageInput').style.display = 'none';
+           } else {
+               document.getElementById('result').innerHTML = 'Ошибка';
+           }
+       }
+
+       function clearPercentageInputs() {
+           document.getElementById('percentageValue').value = '';
+           document.getElementById('baseValue').value = '';
+       }
+
+       function calculatePower() {
+           const base = parseFloat(document.getElementById('baseNumber').value);
+           const exponent = parseFloat(document.getElementById('exponentNumber').value);
+           
+           if (!isNaN(base) && !isNaN(exponent)) {
+               const result = Math.pow(base, exponent);
+               document.getElementById('result').innerHTML = 'Результат:' + result;
+
+               clearPowerInputs();
+               document.getElementById('powerInput').style.display = 'none';
+           } else {
+               document.getElementById('result').innerHTML = 'Ошибка';
+           }
+       }
+
+       function clearPowerInputs() {
+           document.getElementById('baseNumber').value = '';
+           document.getElementById('exponentNumber').value = '';
+       }
+
+       function clearCalculator() {
+           document.getElementById('numbers').value = '';
+           document.getElementById('result').innerHTML = 'Результат:' + '0';
+           clearPercentageInputs();
+           clearPowerInputs();
+           
+           document.getElementById('percentageInput').style.display = 'none';
+           document.getElementById('powerInput').style.display = 'none';
+       }
+   </script>
 
 </body>
 </html>
