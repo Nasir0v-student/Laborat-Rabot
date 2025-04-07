@@ -3,25 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Калькулятор+ - Список пользователей</title>
+    <style>
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff; 
+            color: white;
+            text-transform: uppercase;
+        }
+        nav {
+            text-align: right; 
+            margin-bottom: 20px; 
+        }
+        a.admin-panel {
+            background-color: #007bff; 
+            color: white; 
+            padding: 10px 15px; 
+            text-decoration: none; /* Убираем подчеркивание */
+            border-radius: 5px; /* Скругление углов */
+            transition: background-color 0.3s; /* Плавный переход цвета фона */
+        }
+        a.admin-panel:hover {
+            background-color: #0056b3; /* Цвет фона при наведении */
+        }
+    </style>
 </head>
 <body>
-    <h1>Calculator+ (Список пользователей)</h1>
-<script src="1.js"></script>
-<table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Nickname</th>
-        <th scope="col">Email</th>
-        <th scope="col">Password</th>
-      </tr>
-    </thead>
-    <tbody id="calculator+">
-    </tbody>
-  </table>
+    <header>
+        <h1>Calculator+ (Список пользователей)</h1>
+        <nav>
+            <a href="forms.html" class="admin-panel">Админ панель</a> 
+        </nav>
+    </header>
 
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nickname</th>
+                <th scope="col">Email</th>
+                <th scope="col">Password</th>
+            </tr>
+        </thead>
+        <tbody id="calculator+">
+           
+        </tbody>
+    </table>
 
-
+    <script src="1.js"></script>
 </body>
 </html>
