@@ -137,5 +137,21 @@
            </form>
        </div>
    </div>
+   <script>
+
+    const form = document.getElementById('userForm');
+
+    const submitButton = document.getElementById('submitButton');
+
+    function checkFormCompletion() {
+
+        const isFormComplete = [...form.elements].every(input => input.value.trim() !== '');
+
+        submitButton.disabled = !isFormComplete;
+
+    }
+    form.addEventListener('input', checkFormCompletion);
+
+</script>
 </body>
 </html>
