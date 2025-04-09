@@ -9,8 +9,10 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            
             background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Устанавливаем минимальную высоту для body */
         }
 
         .navbar {
@@ -30,6 +32,7 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             max-width: 400px;
             margin: 0 auto;
+            flex-grow: 1; /* Позволяет калькулятору занимать доступное пространство */
         }
 
         input[type="text"], input[type="password"], input[type="email"] {
@@ -70,6 +73,11 @@
             display: none;
             margin-top: 10px;
         }
+
+        .footer {
+            background-color: #f0f0f0; /* Цвет фона для footer совпадает с фоном страницы */
+            padding: 10px; /* Отступы внутри footer */
+      }
     </style>
 </head>
 <body>
@@ -119,102 +127,103 @@
    </div>
 
    <script>
-       function appendOperator(operator) {
-           document.getElementById('numbers').value += operator;
-           document.getElementById('numbers').focus();
-       }
+    function appendOperator(operator) {
+        document.getElementById('numbers').value += operator;
+        document.getElementById('numbers').focus();
+    }
 
-       function calculate() {
-           let input = document.getElementById('numbers').value.replace(',', '.'); 
-           let result;
+    function calculate() {
+        let input = document.getElementById('numbers').value.replace(',', '.'); 
+        let result;
 
-           try {
-               result = eval(input);
-               if (result === Infinity || result === -Infinity) {
-                   throw new Error("Ошибка: деление на ноль");
-               }
-               
-               if (isNaN(result)) {
-                   throw new Error("Ошибка в вычислении");
-               }
-               
-               document.getElementById('result').innerHTML = 'Результат: ' + result;
+        try {
+            result = eval(input);
+            if (result === Infinity || result === -Infinity) {
+                throw new Error("Ошибка: деление на ноль");
+            }
+            
+            if (isNaN(result)) {
+                throw new Error("Ошибка в вычислении");
+            }
+            
+            document.getElementById('result').innerHTML = 'Результат: ' + result;
 
-           } catch (error) {
-               document.getElementById('result').innerHTML = 'Ошибка';
-           }
-       }
-       
-       function togglePercentageInput() {
-           const percentageInput = document.getElementById('percentageInput');
-           percentageInput.style.display = percentageInput.style.display === 'block' ? 'none' : 'block';
-           document.getElementById('powerInput').style.display = 'none'; 
-       }
+        } catch (error) {
+            document.getElementById('result').innerHTML = 'Ошибка';
+        }
+    }
+    
+    function togglePercentageInput() {
+        const percentageInput = document.getElementById('percentageInput');
+        percentageInput.style.display = percentageInput.style.display === 'block' ? 'none' : 'block';
+        document.getElementById('powerInput').style.display = 'none'; 
+    }
 
-       function togglePowerInput() {
-           const powerInput = document.getElementById('powerInput');
-           powerInput.style.display = powerInput.style.display === 'block' ? 'none' : 'block';
-           document.getElementById('percentageInput').style.display = 'none'; 
-       }
+    function togglePowerInput() {
+        const powerInput = document.getElementById('powerInput');
+        powerInput.style.display = powerInput.style.display === 'block' ? 'none' : 'block';
+        document.getElementById('percentageInput').style.display = 'none'; 
+    }
 
-       function calculatePercentageValue() {
-           const percentage = parseFloat(document.getElementById('percentageValue').value);
-           const base = parseFloat(document.getElementById('baseValue').value);
-           if (!isNaN(percentage) && !isNaN(base)) {
-               const result = (percentage / 100) * base;
-               document.getElementById('result').innerHTML = 'Результат: ' + result;
+    function calculatePercentageValue() {
+        const percentage = parseFloat(document.getElementById('percentageValue').value);
+        const base = parseFloat(document.getElementById('baseValue').value);
+        if (!isNaN(percentage) && !isNaN(base)) {
+            const result = (percentage / 100) * base;
+            document.getElementById('result').innerHTML = 'Результат: ' + result;
 
-               clearPercentageInputs();
-               document.getElementById('percentageInput').style.display = 'none';
-           } else {
-               document.getElementById('result').innerHTML = 'Ошибка';
-           }
-       }
+            clearPercentageInputs();
+            document.getElementById('percentageInput').style.display = 'none';
+        } else {
+            document.getElementById('result').innerHTML = 'Ошибка';
+        }
+    }
 
-       function clearPercentageInputs() {
-           document.getElementById('percentageValue').value = '';
-           document.getElementById('baseValue').value = '';
-       }
+    function clearPercentageInputs() {
+        document.getElementById('percentageValue').value = '';
+        document.getElementById('baseValue').value = '';
+    }
 
-       function calculatePower() {
-           const base = parseFloat(document.getElementById('baseNumber').value);
-           const exponent = parseFloat(document.getElementById('exponentNumber').value);
-           
-           if (!isNaN(base) && !isNaN(exponent)) {
-               const result = Math.pow(base, exponent);
-               document.getElementById('result').innerHTML = 'Результат:' + result;
+    function calculatePower() {
+        const base = parseFloat(document.getElementById('baseNumber').value);
+        const exponent = parseFloat(document.getElementById('exponentNumber').value);
+        
+        if (!isNaN(base) && !isNaN(exponent)) {
+            const result = Math.pow(base, exponent);
+            document.getElementById('result').innerHTML = 'Результат:' + result;
 
-               clearPowerInputs();
-               document.getElementById('powerInput').style.display = 'none';
-           } else {
-               document.getElementById('result').innerHTML = 'Ошибка';
-           }
-       }
+            clearPowerInputs();
+            document.getElementById('powerInput').style.display = 'none';
+        } else {
+            document.getElementById('result').innerHTML = 'Ошибка';
+        }
+    }
 
-       function clearPowerInputs() {
-           document.getElementById('baseNumber').value = '';
-           document.getElementById('exponentNumber').value = '';
-       }
+    function clearPowerInputs() {
+        document.getElementById('baseNumber').value = '';
+        document.getElementById('exponentNumber').value = '';
+    }
 
-       function clearCalculator() {
-           document.getElementById('numbers').value = '';
-           document.getElementById('result').innerHTML = 'Результат:' + '0';
-           clearPercentageInputs();
-           clearPowerInputs();
-           
-           document.getElementById('percentageInput').style.display = 'none';
-           document.getElementById('powerInput').style.display = 'none';
-       }
-       
-   </script>
-<footer class="footer bg-body-teriarry">
-    <div class="container p-4">
-        <div class="d-flex flex-column">
-            <p>Калькулятор: "Calculator+"</p>
-            <p> Для того что бы зарегестрироваться пишите желаемый Nickname, ваш Email и Password вот сюда: <a href="mail: hollyjammer2@gmail.com">hollyjammer2@gmail.com</a> </p>
-            </div>
+    function clearCalculator() {
+        document.getElementById('numbers').value = '';
+        document.getElementById('result').innerHTML = 'Результат:' + '0';
+        clearPercentageInputs();
+        clearPowerInputs();
+        
+        document.getElementById('percentageInput').style.display = 'none';
+        document.getElementById('powerInput').style.display = 'none';
+    }
+    
+</script>
+<footer class='footer'>
+    <div class='container p-4'>
+        <div class='d-flex flex-column'>
+            <p>Калькулятор "Calculator+"</p>
+            <p>Для того чтобы зарегистрироваться пишите желаемый Nickname, ваш Email и Password вот сюда:
+               <a href='mailto:hollyjammer2@gmail.com'>hollyjammer2@gmail.com</a></p>
         </div>
-</footer>
+</div>
+ </footer>
 
 </body>
 </html>
