@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/bootstrap.min.js"></script>
     <title>Calculator+</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            
             background-color: #f0f0f0;
         }
 
@@ -87,7 +89,7 @@
           <button onclick="appendOperator('8')">8</button>
           <button onclick="appendOperator('9')">9</button>
           <button onclick="appendOperator('0')">0</button>
-          <button onclick="appendOperator(',')">,</button> 
+          <button onclick="appendOperator('.')">.</button> 
           <button onclick="appendOperator('(')"> ( </button>
           <button onclick="appendOperator(')')"> ) </button>
           <button onclick="appendOperator('+')">+</button>
@@ -203,7 +205,16 @@
            document.getElementById('percentageInput').style.display = 'none';
            document.getElementById('powerInput').style.display = 'none';
        }
+       
    </script>
+<footer class="footer bg-body-teriarry">
+    <div class="container p-4">
+        <div class="d-flex flex-column">
+            <p>Калькулятор: "Calculator+"</p>
+            <p> Для того что бы зарегестрироваться пишите желаемый Nickname, ваш Email и Password вот сюда: <a href="mail: hollyjammer2@gmail.com">hollyjammer2@gmail.com</a> </p>
+            </div>
+        </div>
+</footer>
 
 </body>
 </html>
