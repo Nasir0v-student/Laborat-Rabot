@@ -78,6 +78,14 @@
             background-color: #f0f0f0; /* Цвет фона для footer совпадает с фоном страницы */
             padding: 10px; /* Отступы внутри footer */
       }
+      #unitsConverter {
+        margin-top: 20px;
+    }
+
+    #unitsConverter select {
+        padding: 5px;
+        margin-right: 10px;
+    }
     </style>
 </head>
 <body>
@@ -109,6 +117,37 @@
           <button onclick="calculate()">Вычислить</button>
           <button onclick="clearCalculator()">Очистить</button>
         </div>
+        <p id="result">Результат: 0</p>
+        <div id="unitsConverter">
+            <h2>Конвертер единиц измерения</h2>
+            <input type="text" id="unitValue" placeholder="Введите значение">
+            <select id="fromUnit">
+                <option value="мм">мм</option>
+                <option value="см">см</option>
+                <option value="м">м</option>
+                <option value="км">км</option>
+                <option value="дюймы">дюймы</option>
+                <option value="футы">футы</option>
+                <option value="ярды">ярды</option>
+                <option value="мили">мили</option>
+            </select>
+            в
+            <select id="toUnit">
+                <option value="мм">мм</option>
+                <option value="см">см</option>
+                <option value="м">м</option>
+                <option value="км">км</option>
+                <option value="дюймы">дюймы</option>
+                <option value="футы">футы</option>
+                <option value="ярды">ярды</option>
+                <option value="мили">мили</option>
+            </select>
+            <button onclick="convertUnits()">Конвертировать</button>
+        </div>
+    
+        <div id="result"></div>
+    
+    </div>
 
         <div class="percentage-input" id="percentageInput">
             <input type="text" id="percentageValue" placeholder="Введите проценты">
@@ -123,7 +162,7 @@
            <br><br> 
        </div>
 
-       <p id="result">Результат: 0</p>
+      
    </div>
 
    <script>
@@ -212,6 +251,49 @@
         
         document.getElementById('percentageInput').style.display = 'none';
         document.getElementById('powerInput').style.display = 'none';
+    }
+    function convertUnits() {
+        const value = parseFloat(document.getElementById('unitValue').value);
+        const fromUnit = document.getElementById('fromUnit').value;
+        const toUnit = document.getElementById('toUnit').value;
+
+        if (isNaN(value)) {
+            document.getElementById('result').innerHTML = 'Ошибка: неверное значение';
+            return;
+        }
+
+        let meters; // Переводим все в метры
+
+        switch (fromUnit) {
+            case 'мм': meters = value / 1000; break;
+            case 'см': meters = value / 100; break;
+            case 'м': meters = value; break;
+            case 'км': meters = value * 1000; break;
+            case 'дюймы': meters = value * 0.0254; break;
+            case 'футы': meters = value * 0.3048; break;
+            case 'ярды': meters = value * 0.9144; break;
+            case 'мили': meters = value * 1609.34; break;
+            default:
+                document.getElementById('result').innerHTML = 'Ошибка: неверная исходная единица измерения';
+                return;
+        }
+
+        let result;
+        switch (toUnit) {
+            case 'мм': result = meters * 1000; break;
+            case 'см': result = meters * 100; break;
+            case 'м': result = meters; break;
+            case 'км': result = meters / 1000; break;
+            case 'дюймы': result = meters / 0.0254; break;
+            case 'футы': result = meters / 0.3048; break;
+            case 'ярды': result = meters / 0.9144; break;
+            case 'мили': result = meters / 1609.34; break;
+            default:
+                document.getElementById('result').innerHTML = 'Ошибка: неверная конечная единица измерения';
+                return;
+        }
+
+        document.getElementById('result').innerHTML = 'Результат: ' + result.toFixed(5) + ' ' + toUnit; 
     }
     
 </script>
