@@ -24,10 +24,10 @@ def get_products():
 
 @app.route("/api/user", methods=["POST"])
 def add_product():
-    if request.method == "POST":
+    if request.methods == "POST":
         form = request.form
         with engine.connect() as connection:
-            query = text("INSERT INTO `calculator+` (Nickname, Email, Password) VALUES (:Nickname, :Email, :Password)")
+            query = text("INSERT INTO `calculator+` (Nickname, Email, Password) VALUES (:Nickname, :Email, :Password) returning *")
             query = query.bindparams(bindparam("Nickname", form.get("Nickname")))
             query = query.bindparams(bindparam("Email", form.get("Email")))
             query = query.bindparams(bindparam("Password", form.get("Password")))
@@ -38,7 +38,7 @@ def add_product():
 
 @app.route("/api/user/<id>", methods=["DELETE"])
 def delete_user(id):
-    if request.method == "DELETE":
+    if request.methods == "DELETE":
         with engine.connect() as connection:
             query = text("DELETE FROM `calculator+` WHERE id = :id;")
             query = query.bindparams(bindparam("id", id))
@@ -47,6 +47,23 @@ def delete_user(id):
             return jsonify({"message": "success", "id": id})
     return jsonify({"message": "Error"})
 
+
+@app.route("/api/user/<id>", methods=["GET", "DELETE", "PUT"])
+def user (id: int):
+    if request.methods == "PUT": 
+        with engine.connect() as connection:
+            query = text("UPDATE user SET Nickname = :Nickname, Email = : Email, Password = : Password ")
+            query = query.bindparams(bindparam("Nickname", "Nickname"))
+            query = query.bindparams(bindparam("Email", "Email"))
+            query = query.bindparams(bindparam("Password", "Password"))
+            query = query.bindparams(bindparam("id", id))
+            result = connection.execute(query)
+            connection.commit()
+            query = text ("SELECT * FROM user WHERE id = : id")
+            query = query.bindparams(bindparam("id", id))
+            result = connection.execute(query)
+            return jsonify(result.fetchone()._asdict()) 
+        return jsonify({"message": "Error"})
 def main():
     app.run("localhost", 8000, debug=True)
 
