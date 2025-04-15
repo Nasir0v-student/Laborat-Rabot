@@ -8,40 +8,43 @@ async function get_calculator() {
     }
 }
 
+
 async function render_calculator() {
-    let template = `
-    <tr>
-        <th scope="row">{id}</th>
-        <td>{Nickname}</td>
-        <td>{Email}</td>
-        <td>{Password}
-        <td>
-        <button class="btn btn-danger" onclick="delete_user({id})">🗑️</button> 
-        </td>
-    </tr>`;
+    let template = `<tr>
+                        <th scope="row">{id}</th>
+                        <td>{Nickname}</td>
+                        <td>{Email}</td>
+                        <td>{Password}</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="delete_user({id})">🗑️</button>
+                            <button class="btn btn-warning" href="forms.html?id={id}">✏️</button>
+                        </td>
+                    </tr>`;
 
     let calculator = await get_calculator();
+
     let container = document.getElementById("calculator+");
+
     calculator.forEach(element => {
-        let calculator = template
-            .replaceAll("{id}", element.id)
-            .replace("{Nickname}", element.Nickname)
-            .replace("{Email}", element.Email)
-            .replace("{Password}", element.Password)
-          
-        container.innerHTML += calculator;
+        let row = template
+            .replace(/{id}/g, element.id)
+            .replace(/{Nickname}/g, element.Nickname)
+            .replace(/{Email}/g, element.Email)
+            .replace(/{Password}/g, element.Password);
+
+        container.innerHTML += row;
     });
 }
+
 
 async function delete_user(id) {
     let response = await fetch(`http://localhost:8000/api/user/${id}`, {
         method: 'DELETE'
     });
-    
     if (response.ok) {
         window.location.reload(false);
     } else {
-        alert("Ошибка http: " + response.status);
+        alert("Ошибка HTTP: " + response.status);
     }
 }
 
