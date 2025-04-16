@@ -17,7 +17,7 @@ async function render_calculator() {
                         <td>{Password}</td>
                         <td>
                             <button class="btn btn-danger" onclick="delete_user({id})">🗑️</button>
-                            <button class="btn btn-warning" href="forms.html?id={id}">✏️</button>
+                            <button class="btn btn-warning" onclick="edit_user({id})">✏️</button>
                         </td>
                     </tr>`;
 
@@ -35,6 +35,12 @@ async function render_calculator() {
         container.innerHTML += row;
     });
 }
+
+
+function edit_user(id) {
+    window.location.href = `forms.html?id=${id}`;
+}
+
 
 
 async function delete_user(id) {
