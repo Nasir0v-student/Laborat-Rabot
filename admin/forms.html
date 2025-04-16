@@ -133,8 +133,9 @@
                     <input name="Password" type="password" class="form-control" id="Password" required>
                 </div>
 
-                <button type="submit" class="btn btn-success">Отправить</button>
+                
            </form>
+           <button type="submit" class="btn btn-success">Отправить</button>
        </div>
    </div>
    <script>
@@ -142,16 +143,15 @@
     const form = document.getElementById('userForm');
 
     const submitButton = document.getElementById('submitButton');
-
     function checkFormCompletion() {
-
         const isFormComplete = [...form.elements].every(input => input.value.trim() !== '');
-
         submitButton.disabled = !isFormComplete;
-
     }
     form.addEventListener('input', checkFormCompletion);
 
 </script>
+
+<script src="1.js"></script>
+<script src="forms.js"></script>
 </body>
 </html>
