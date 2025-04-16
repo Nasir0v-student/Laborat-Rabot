@@ -24,7 +24,7 @@ def get_products():
 
 @app.route("/api/user", methods=["POST"])
 def add_product():
-    if request.methods == "POST":
+    if request.method == "POST":
         form = request.form
         with engine.connect() as connection:
             query = text("INSERT INTO `calculator+` (Nickname, Email, Password) VALUES (:Nickname, :Email, :Password) returning *")
@@ -38,7 +38,7 @@ def add_product():
 
 @app.route("/api/user/<id>", methods=["DELETE"])
 def delete_user(id):
-    if request.methods == "DELETE":
+    if request.method == "DELETE":
         with engine.connect() as connection:
             query = text("DELETE FROM `calculator+` WHERE id = :id;")
             query = query.bindparams(bindparam("id", id))
@@ -50,11 +50,12 @@ def delete_user(id):
 
 @app.route("/api/user/<id>", methods=["GET", "DELETE", "PUT"])
 def user (id: int):
-    if request.methods == "PUT": 
+    if request.method == "PUT": 
         with engine.connect() as connection:
             query = text("UPDATE user SET Nickname = :Nickname, Email = : Email, Password = : Password ")
             query = query.bindparams(bindparam("Nickname", "Nickname"))
             query = query.bindparams(bindparam("Email", "Email"))
+            
             query = query.bindparams(bindparam("Password", "Password"))
             query = query.bindparams(bindparam("id", id))
             result = connection.execute(query)
