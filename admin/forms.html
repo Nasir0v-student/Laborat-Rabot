@@ -9,41 +9,38 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
             background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; 
+            height: 100vh;
+            padding-top: 50px; 
         }
 
-        .navbar {
+        .container {
             background-color: #ffffff;
-            text-align: center;
             border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .calculator {
-            padding: 40px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            background-color: #ffffff;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
             max-width: 400px;
-            margin: 0 auto;
+            width: 100%;
         }
 
-        .registration {
-            display: none; 
-            margin-top: 5px;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        h1 {
+            text-align: center;
+            margin-bottom: 20px; 
+            color: #343a40;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #495057;
         }
 
         input[type="text"], input[type="email"], input[type="password"] {
-            width: calc(100% - 20px);
+            width: 100%;
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #ced4da;
@@ -66,92 +63,67 @@
             cursor: pointer;
             transition: background-color 0.3s;
             margin-top: 10px; 
+            width: 100%;
         }
 
         button:hover {
             background-color: #0056b3; 
         }
 
-        #result {
-            font-size: 18px;
-            margin-top: 10px;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px; 
-            color: #343a40;
-        }
-
-        .form-group label {
-            font-weight: bold;
-            color: #495057;
-        }
-        
         .user-button-container {
-             position:absolute; 
-             top :20px; 
-             left :20px; 
-         }
-         
-         a.user {
-             padding :5px; 
-             font-size :18px; 
-             background-color :#007bff; 
-             color:white; 
-             border:none; 
-             border-radius :5px;
-             text-decoration: none; /* Убираем подчеркивание */ 
-             cursor:pointer; 
-             transition :background-color .3s; 
-         }
-         
-         a.user:hover {
-             background-color:#0056b3; 
-         }
+            position: absolute; 
+            top: 20px; 
+            left: 20px; 
+        }
+
+        a.user {
+            padding: 5px; 
+            font-size: 18px; 
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+            border-radius: 5px;
+            text-decoration: none; 
+            cursor: pointer; 
+            transition: background-color .3s; 
+        }
+
+        a.user:hover {
+            background-color: #0056b3; 
+        }
     </style>
 </head>
 <body>
     <div class="user-button-container">
         <a href="users.html" class="user">Пользователи</a>
     </div>
-    <h1>Calculator+ (Админ)</h1> 
+    <div class="container">
+        <h1>Calculator+ (Админ)</h1> 
+        <form id="userForm" action="http://localhost:8000/api/user" method="POST">
+            <div class="form-group">
+                <label for="Nickname">Никнейм</label>
+                <input name="Nickname" type="text" class="form-control" id="Nickname" required>
+            </div>
+            <div class="form-group">
+                <label for="Email">Почта</label>
+                <input name="Email" type="email" class="form-control" id="Email" required>
+            </div>
+            <div class="form-group">
+                <label for="Password">Пароль</label>
+                <input name="Password" type="password" class="form-control" id="Password" required>
+            </div>
+            <button type="submit" class="btn btn-success" id="_button">Отправить</button>
+        </form>
+    </div>
+    <script>
+        const form = document.getElementById('userForm');
+        const submitButton = document.getElementById('_button');
 
-    <div class="container mt-2">
-        <div class="calculator">
-           <form action="http://localhost:8000/api/user" method="POST">
-                <div class="form-group">
-                    <label for="Nickname">Никнейм</label>
-                    <input name="Nickname" type="text" class="form-control" id="Nickname" required>
-                </div>
-                <div class="form-group">
-                    <label for="Email">Почта</label>
-                    <input name="Email" type="email" class="form-control" id="Email" required>
-                </div>
-                <div class="form-group">
-                    <label for="Password">Пароль</label>
-                    <input name="Password" type="password" class="form-control" id="Password" required>
-                </div>
+        function checkFormCompletion() {
+            const isFormComplete = [...form.elements].every(input => input.value.trim() !== '');
+            submitButton.disabled = !isFormComplete;
+        }
 
-                
-           </form>
-           <button type="submit" class="btn btn-success">Отправить</button>
-       </div>
-   </div>
-   <script>
-
-    const form = document.getElementById('userForm');
-
-    const submitButton = document.getElementById('submitButton');
-    function checkFormCompletion() {
-        const isFormComplete = [...form.elements].every(input => input.value.trim() !== '');
-        submitButton.disabled = !isFormComplete;
-    }
-    form.addEventListener('input', checkFormCompletion);
-
-</script>
-
-<script src="1.js"></script>
-<script src="forms.js"></script>
-</body>
-</html>
+        form.addEventListener('input', checkFormCompletion);
+    </script>
+    <script src="forms.js"></script>
