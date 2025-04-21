@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/bootstrap.min.js"></script>
     <title>Калькулятор+ - Список пользователей</title>
     <style>
         th, td {
@@ -23,12 +25,12 @@
             background-color: #007bff; 
             color: white; 
             padding: 10px 15px; 
-            text-decoration: none; /* Убираем подчеркивание */
-            border-radius: 5px; /* Скругление углов */
-            transition: background-color 0.3s; /* Плавный переход цвета фона */
+            text-decoration: none; 
+            border-radius: 5px; 
+            transition: background-color 0.3s;
         }
         a.admin-panel:hover {
-            background-color: #0056b3; /* Цвет фона при наведении */
+            background-color: #0056b3; 
         }
     </style>
 </head>
@@ -43,7 +45,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th scope="col">#</th>
+                <th scope="col">id</th>
                 <th scope="col">Nickname</th>
                 <th scope="col">Email</th>
                 <th scope="col">Password</th>
