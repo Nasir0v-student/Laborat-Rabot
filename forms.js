@@ -41,12 +41,12 @@ async function edit_user() {
 async function add_user() {
     let response = await fetch("http://localhost:8000/api/user", {
         method: "POST",
-        body: new FormData(document.getElementById("form"))
-    })
+        body: new FormData(document.getElementById("userForm")) // Измените на правильный id
+    });
     if (response.ok) {
-        window.location = "./"
+        window.location = "./";
     } else {
-        alert("Ошибка HTTP: " + response.status)
+        alert("Ошибка HTTP: " + response.status);
     }
 }
 
